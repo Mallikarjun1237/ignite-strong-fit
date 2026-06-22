@@ -8,8 +8,13 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { AnimatePresence, motion } from "motion/react";
 
 import appCss from "../styles.css?url";
+import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
+import { Toaster } from "../components/ui/sonner";
+import { CartProvider } from "../lib/cart";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -77,16 +82,30 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "AK Boxing Club — Premium Boxing Gym in NYC" },
+      {
+        name: "description",
+        content:
+          "AK Boxing Club in Lower Manhattan: small-class boxing, expert coaching, memberships, supplements and diet plans. Black-owned & LGBTQ+ friendly.",
+      },
+      { name: "author", content: "AK Boxing Club" },
+      { property: "og:title", content: "AK Boxing Club — Premium Boxing Gym in NYC" },
+      {
+        property: "og:description",
+        content:
+          "Train at NYC's premium boxing club. Small classes, championship coaching, and a community that fights for you.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@AKBoxing" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
@@ -115,11 +134,41 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  const pathname = router.state.location.pathname;
+  const hash = router.state.location.hash;
+
+  // Smooth-scroll to hash targets (used by the home page section nav).
+  useEffect(() => {
+    if (hash) {
+      const el = document.getElementById(hash);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+    }
+    window.scrollTo({ top: 0 });
+  }, [pathname, hash]);
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <CartProvider>
+        <Navbar />
+        <AnimatePresence mode="wait">
+          <motion.main
+            key={pathname}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+          </motion.main>
+        </AnimatePresence>
+        <Footer />
+        <Toaster />
+      </CartProvider>
     </QueryClientProvider>
   );
 }
