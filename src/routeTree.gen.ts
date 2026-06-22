@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TrainersRouteImport } from './routes/trainers'
+import { Route as SupplementsRouteImport } from './routes/supplements'
 import { Route as DietPlansRouteImport } from './routes/diet-plans'
 import { Route as IndexRouteImport } from './routes/index'
 
 const TrainersRoute = TrainersRouteImport.update({
   id: '/trainers',
   path: '/trainers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupplementsRoute = SupplementsRouteImport.update({
+  id: '/supplements',
+  path: '/supplements',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DietPlansRoute = DietPlansRouteImport.update({
@@ -32,30 +38,34 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/diet-plans': typeof DietPlansRoute
+  '/supplements': typeof SupplementsRoute
   '/trainers': typeof TrainersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/diet-plans': typeof DietPlansRoute
+  '/supplements': typeof SupplementsRoute
   '/trainers': typeof TrainersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/diet-plans': typeof DietPlansRoute
+  '/supplements': typeof SupplementsRoute
   '/trainers': typeof TrainersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/diet-plans' | '/trainers'
+  fullPaths: '/' | '/diet-plans' | '/supplements' | '/trainers'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/diet-plans' | '/trainers'
-  id: '__root__' | '/' | '/diet-plans' | '/trainers'
+  to: '/' | '/diet-plans' | '/supplements' | '/trainers'
+  id: '__root__' | '/' | '/diet-plans' | '/supplements' | '/trainers'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DietPlansRoute: typeof DietPlansRoute
+  SupplementsRoute: typeof SupplementsRoute
   TrainersRoute: typeof TrainersRoute
 }
 
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/trainers'
       fullPath: '/trainers'
       preLoaderRoute: typeof TrainersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/supplements': {
+      id: '/supplements'
+      path: '/supplements'
+      fullPath: '/supplements'
+      preLoaderRoute: typeof SupplementsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/diet-plans': {
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DietPlansRoute: DietPlansRoute,
+  SupplementsRoute: SupplementsRoute,
   TrainersRoute: TrainersRoute,
 }
 export const routeTree = rootRouteImport
