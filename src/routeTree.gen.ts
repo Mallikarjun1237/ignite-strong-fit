@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TrainersRouteImport } from './routes/trainers'
 import { Route as SupplementsRouteImport } from './routes/supplements'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DietPlansRouteImport } from './routes/diet-plans'
 import { Route as BookingRouteImport } from './routes/booking'
@@ -24,6 +25,11 @@ const TrainersRoute = TrainersRouteImport.update({
 const SupplementsRoute = SupplementsRouteImport.update({
   id: '/supplements',
   path: '/supplements',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/booking': typeof BookingRoute
   '/diet-plans': typeof DietPlansRoute
   '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/supplements': typeof SupplementsRoute
   '/trainers': typeof TrainersRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/booking': typeof BookingRoute
   '/diet-plans': typeof DietPlansRoute
   '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/supplements': typeof SupplementsRoute
   '/trainers': typeof TrainersRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/booking': typeof BookingRoute
   '/diet-plans': typeof DietPlansRoute
   '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/supplements': typeof SupplementsRoute
   '/trainers': typeof TrainersRoute
 }
@@ -79,16 +88,25 @@ export interface FileRouteTypes {
     | '/booking'
     | '/diet-plans'
     | '/login'
+    | '/register'
     | '/supplements'
     | '/trainers'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/booking' | '/diet-plans' | '/login' | '/supplements' | '/trainers'
+  to:
+    | '/'
+    | '/booking'
+    | '/diet-plans'
+    | '/login'
+    | '/register'
+    | '/supplements'
+    | '/trainers'
   id:
     | '__root__'
     | '/'
     | '/booking'
     | '/diet-plans'
     | '/login'
+    | '/register'
     | '/supplements'
     | '/trainers'
   fileRoutesById: FileRoutesById
@@ -98,6 +116,7 @@ export interface RootRouteChildren {
   BookingRoute: typeof BookingRoute
   DietPlansRoute: typeof DietPlansRoute
   LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
   SupplementsRoute: typeof SupplementsRoute
   TrainersRoute: typeof TrainersRoute
 }
@@ -116,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/supplements'
       fullPath: '/supplements'
       preLoaderRoute: typeof SupplementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -154,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   BookingRoute: BookingRoute,
   DietPlansRoute: DietPlansRoute,
   LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
   SupplementsRoute: SupplementsRoute,
   TrainersRoute: TrainersRoute,
 }
