@@ -129,3 +129,67 @@ export function Navbar() {
     </header>
   );
 }
+
+function CartButton() {
+  const { lines, count, total, remove, setQty, clear } = useCart();
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <button className="relative grid h-10 w-10 place-items-center rounded-md text-foreground transition-colors hover:bg-secondary" aria-label="Open cart">
+          <ShoppingBag className="h-5 w-5" />
+          {count > 0 && (
+            <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground">
+              {count}
+            </span>
+          )}
+        </button>
+      </SheetTrigger>
+      <SheetContent className="flex w-full flex-col sm:max-w-md">
+        <SheetHeader>
+          <SheetTitle className="font-display uppercase">Your Cart</SheetTitle>
+        </SheetHeader>
+
+        {lines.length === 0 ? (
+          <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center text-muted-foreground">
+            <ShoppingBag className="h-10 w-10 opacity-40" />
+            <p>Your cart is empty.</p>
+            <Button asChild variant="outlineHero" size="sm">
+              <Link to="/supplements">Shop supplements</Link>
+            </Button>
+          </div>
+        ) : (
+          <>
+            <div className="flex-1 space-y-4 overflow-y-auto py-2">
+              {lines.map((l) => (
+                <div key={l.id} className="flex gap-3 rounded-lg border border-border p-3">
+                  <img src={l.image} alt={l.name} className="h-16 w-16 rounded-md object-cover" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium leading-tight">{l.name}</p>
+                    <p className="text-sm text-primary">${priceAfterDiscount(l).toFixed(2)}</p>
+                    <div className="mt-1.5 flex items-center gap-2">
+                      <button onClick={() => setQty(l.id, l.qty - 1)} className="grid h-6 w-6 place-items-center rounded border border-border">−</button>
+                      <span className="w-6 text-center text-sm">{l.qty}</span>
+                      <button onClick={() => setQty(l.id, l.qty + 1)} className="grid h-6 w-6 place-items-center rounded border border-border">+</button>
+                    </div>
+                  </div>
+                  <button onClick={() => remove(l.id)} className="self-start text-muted-foreground hover:text-primary" aria-label="Remove">
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className="border-t border-border pt-4">
+              <div className="mb-4 flex items-center justify-between">
+                <span className="text-muted-foreground">Subtotal</span>
+                <span className="font-display text-2xl font-bold">${total.toFixed(2)}</span>
+              </div>
+              <Button variant="hero" size="lg" className="w-full" onClick={() => clear()}>
+                Checkout
+              </Button>
+            </div>
+          </>
+        )}
+      </SheetContent>
+    </Sheet>
+  );
+}
