@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TrainersRouteImport } from './routes/trainers'
 import { Route as SupplementsRouteImport } from './routes/supplements'
 import { Route as DietPlansRouteImport } from './routes/diet-plans'
+import { Route as BookingRouteImport } from './routes/booking'
 import { Route as IndexRouteImport } from './routes/index'
 
 const TrainersRoute = TrainersRouteImport.update({
@@ -29,6 +30,11 @@ const DietPlansRoute = DietPlansRouteImport.update({
   path: '/diet-plans',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BookingRoute = BookingRouteImport.update({
+  id: '/booking',
+  path: '/booking',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,12 +43,14 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/booking': typeof BookingRoute
   '/diet-plans': typeof DietPlansRoute
   '/supplements': typeof SupplementsRoute
   '/trainers': typeof TrainersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/booking': typeof BookingRoute
   '/diet-plans': typeof DietPlansRoute
   '/supplements': typeof SupplementsRoute
   '/trainers': typeof TrainersRoute
@@ -50,20 +58,28 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/booking': typeof BookingRoute
   '/diet-plans': typeof DietPlansRoute
   '/supplements': typeof SupplementsRoute
   '/trainers': typeof TrainersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/diet-plans' | '/supplements' | '/trainers'
+  fullPaths: '/' | '/booking' | '/diet-plans' | '/supplements' | '/trainers'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/diet-plans' | '/supplements' | '/trainers'
-  id: '__root__' | '/' | '/diet-plans' | '/supplements' | '/trainers'
+  to: '/' | '/booking' | '/diet-plans' | '/supplements' | '/trainers'
+  id:
+    | '__root__'
+    | '/'
+    | '/booking'
+    | '/diet-plans'
+    | '/supplements'
+    | '/trainers'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BookingRoute: typeof BookingRoute
   DietPlansRoute: typeof DietPlansRoute
   SupplementsRoute: typeof SupplementsRoute
   TrainersRoute: typeof TrainersRoute
@@ -92,6 +108,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DietPlansRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/booking': {
+      id: '/booking'
+      path: '/booking'
+      fullPath: '/booking'
+      preLoaderRoute: typeof BookingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +127,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BookingRoute: BookingRoute,
   DietPlansRoute: DietPlansRoute,
   SupplementsRoute: SupplementsRoute,
   TrainersRoute: TrainersRoute,
