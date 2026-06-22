@@ -78,22 +78,22 @@ export function Navbar() {
           ))}
         </ul>
 
-        <div className="hidden items-center gap-3 xl:flex">
-          <Button asChild variant="ghost" size="sm">
+        <div className="flex items-center gap-2 xl:gap-3">
+          <CartButton />
+          <Button asChild variant="ghost" size="sm" className="hidden xl:inline-flex">
             <Link to="/login">Login</Link>
           </Button>
-          <Button asChild variant="hero" size="sm">
+          <Button asChild variant="hero" size="sm" className="hidden xl:inline-flex">
             <Link to="/booking">Book a Class</Link>
           </Button>
+          <button
+            className="grid h-10 w-10 place-items-center rounded-md text-foreground xl:hidden"
+            onClick={() => setOpen((o) => !o)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
-
-        <button
-          className="grid h-10 w-10 place-items-center rounded-md text-foreground xl:hidden"
-          onClick={() => setOpen((o) => !o)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
       </nav>
 
       {open && (
