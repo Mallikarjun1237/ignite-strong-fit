@@ -13,6 +13,7 @@ import { Route as TrainersRouteImport } from './routes/trainers'
 import { Route as SupplementsRouteImport } from './routes/supplements'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as DietPlansRouteImport } from './routes/diet-plans'
 import { Route as BookingRouteImport } from './routes/booking'
 import { Route as IndexRouteImport } from './routes/index'
@@ -37,6 +38,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DietPlansRoute = DietPlansRouteImport.update({
   id: '/diet-plans',
   path: '/diet-plans',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/booking': typeof BookingRoute
   '/diet-plans': typeof DietPlansRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/supplements': typeof SupplementsRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/booking': typeof BookingRoute
   '/diet-plans': typeof DietPlansRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/supplements': typeof SupplementsRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/booking': typeof BookingRoute
   '/diet-plans': typeof DietPlansRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/supplements': typeof SupplementsRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/booking'
     | '/diet-plans'
+    | '/forgot-password'
     | '/login'
     | '/register'
     | '/supplements'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/booking'
     | '/diet-plans'
+    | '/forgot-password'
     | '/login'
     | '/register'
     | '/supplements'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/booking'
     | '/diet-plans'
+    | '/forgot-password'
     | '/login'
     | '/register'
     | '/supplements'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BookingRoute: typeof BookingRoute
   DietPlansRoute: typeof DietPlansRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   SupplementsRoute: typeof SupplementsRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/diet-plans': {
       id: '/diet-plans'
       path: '/diet-plans'
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BookingRoute: BookingRoute,
   DietPlansRoute: DietPlansRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   SupplementsRoute: SupplementsRoute,
